@@ -9,58 +9,92 @@
 </head>
 
 <body>
-  <div class="container">
+  <div class="container-fluid">
     <div class="jumbotron">
       <h2 class="text-center">BSG Friend Finder</h2>
-      <h6 class="text-center">aka you might be a cylon</h6>
     </div>
 
-    <table class="table table-striped text-center">
+    <div class="card">
+      <div class="card-header">
+          Fill out the survey below to see who you might get along with in Battlestar Galactica.
+      </div>
+    <form class="text-center">
+    <table class="table table-striped">
 
       <thead>
         <tr>
           <th scope="col">#</th>
           <th scope="col">Strongly Disagree</th>
           <th scope="col">Disagree</th>
+          <th scope="col">Huh?</th>
           <th scope="col">Neutral</th>
           <th scope="col">Agree</th>
           <th scope="col">Strongly Agree</th>
         </tr>
       </thead>
       
-      <tbody class="text-center">
-        <tr>
-          <th scope="row">1. First question?</th>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-        </tr>
-      </tbody>
+      <tbody class="question-table text-center"></tbody>
+
     </table>
-
-
-    <div class="form-check form-check-inline">
-      <input class="form-check-input" type="radio" name="bsgForm" id="radio1" value="option1">
+    <button type="submit" class="btn btn-secondary submit">Submit</button>
+    </form>
     </div>
-    <div class="form-check form-check-inline">
-      <input class="form-check-input" type="radio" name="bsgForm" id="radio2" value="option2">
-    </div>
-    <div class="form-check form-check-inline">
-      <input class="form-check-input" type="radio" name="bsgForm" id="radio3" value="option3">
-    </div>
-    <div class="form-check form-check-inline">
-      <input class="form-check-input" type="radio" name="bsgForm" id="radio4" value="option4">
-    </div>
-    <div class="form-check form-check-inline">
-      <input class="form-check-input" type="radio" name="bsgForm" id="radio5" value="option5">
-    </div>
-
-
-
-
+    
   </div>
+
+  <script type="text/javascript">
+  
+  function questionQuery() {
+    $.ajax({ url: "/api/questions", method: "GET" }).then(function(questionData) {
+      console.log(questionData);
+    
+      for (var i = 0; i < questionData.length; i++) {
+        var table = $(".question-table");
+
+        var question = questionData[i];
+
+        var row = $('<tr>');
+        var questionSpot = $('<th>');
+        questionSpot.attr("scope", "row");
+        questionSpot.text(question);
+        row.append(questionSpot);
+
+        for (var j = 0; j < 6; j++) {
+          var col = $('<td>');
+          var form = $('<div class="form-check form-check-inline">');
+          var radio = $(`<input class="form-check-input" type="radio" name="bsgForm${i}" id="radio${j}" value="${j}">`);
+          form.append(radio);
+          col.append(form);
+          row.append(col);
+        }
+
+        table.append(row);
+      }
+    });
+  }
+
+  $(".submit").on("click", function(event) {
+    event.preventDefault();
+
+    var answers = [
+      $("input[name=bsgForm0]:checked").val(),
+      $("input[name=bsgForm1]:checked").val(),
+      $("input[name=bsgForm2]:checked").val(),
+      $("input[name=bsgForm3]:checked").val(),
+      $("input[name=bsgForm4]:checked").val(),
+      $("input[name=bsgForm5]:checked").val(),
+      $("input[name=bsgForm6]:checked").val(),
+      $("input[name=bsgForm7]:checked").val(),
+      $("input[name=bsgForm8]:checked").val(),
+      $("input[name=bsgForm9]:checked").val(),
+    ]
+    console.log(answers);
+  });
+
+  // calling
+  questionQuery();
+
+  </script>
 
 </body>
 </html>

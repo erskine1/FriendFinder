@@ -3,6 +3,7 @@
 var friends = [
   {
     name: "Bill Adama",
+    photo: "test.jpg",
     scores: [],
     cylon: false
   },

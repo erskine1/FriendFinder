@@ -1,19 +1,14 @@
-// questions array
-
 var questions = [
-  "Question one goes here?",
-  "Question two goes here?",
-  "Question three goes here?",
-  "Question four goes here?",
-  "Question five",
-  "Question six",
-  "Question seven",
-  "Question eight",
-  "Question nine",
-  "Question ten"
-]
+  "Do you think the human species should probably be annihilated?",
+  "Sometimes you wish everyone would just do as they're told.",
+  "You have a death wish.",
+  "You always wondered if you'd end up in politics.",
+  "You loooove killing Cylons.",
+  "You really hope you're not a Cylon.",
+  "You really hope you're a Cylon.",
+  "You might have a drinking problem.",
+  "You're a natural leader.",
+  "All of this has happened before, and it will all happen again."
+];
 
 module.exports = questions;
-
-// in js we'll want to create an input form for each question to populate the table on page load
-// should keep things pretty clean
