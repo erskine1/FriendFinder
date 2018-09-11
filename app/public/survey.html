@@ -6,6 +6,8 @@
   <title>BSG Survey</title>
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
 </head>
 
 <body>
@@ -23,7 +25,7 @@
 
       <thead>
         <tr>
-          <th scope="col">#</th>
+          <th scope="col"></th>
           <th scope="col">Strongly Disagree</th>
           <th scope="col">Disagree</th>
           <th scope="col">Huh?</th>
@@ -39,6 +41,25 @@
     <button type="submit" class="btn btn-secondary submit">Submit</button>
     </form>
     </div>
+
+    <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="modal-title"></h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              ...
+            </div>
+            <div class="modal-footer">
+              <a href="/" id="restart">Cool, good to know.</a>
+            </div>
+          </div>
+        </div>
+      </div>
     
   </div>
 
@@ -75,8 +96,8 @@
 
   $(".submit").on("click", function(event) {
     event.preventDefault();
-
-    var answers = [
+    var answers = {
+      scores: [
       $("input[name=bsgForm0]:checked").val(),
       $("input[name=bsgForm1]:checked").val(),
       $("input[name=bsgForm2]:checked").val(),
@@ -86,9 +107,24 @@
       $("input[name=bsgForm6]:checked").val(),
       $("input[name=bsgForm7]:checked").val(),
       $("input[name=bsgForm8]:checked").val(),
-      $("input[name=bsgForm9]:checked").val(),
-    ]
+      $("input[name=bsgForm9]:checked").val()]
+    }
     console.log(answers);
+    console.log(parseInt(answers.scores[2]) + parseInt(answers.scores[0]));
+
+    $.post("/api/friends", answers, function(data) {
+      console.log(data);
+
+      $("#modal-title").text("You are most similar to: " + data.name);
+
+      var modal = $(".modal-body");
+      var modalImg = $("<img alt='friend'>");
+      modalImg.attr("src", data.photo);
+      modal.append(modalImg);
+
+      $("#exampleModalCenter").modal('show');
+    });
+
   });
 
   // calling
